@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class playercontroller : MonoBehaviour
 {
-	public float speed = 3;
-	public float jumpForce = 5;
+	public float speed;
+	public float jumpForce;
 	private Rigidbody2D rig;
+	Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
 		rig = GetComponent<Rigidbody2D>();
+		anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -24,6 +26,23 @@ public class playercontroller : MonoBehaviour
 	{
 		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
 		transform.position += movement * Time.deltaTime * speed;
+
+		if (Input.GetAxis("Horizontal") > 0f)
+		{
+			anim.SetBool("running", true);
+			transform.eulerAngles = new Vector3(0f, 0f, 0f);
+		}
+
+		if (Input.GetAxis("Horizontal") < 0f)
+		{
+			anim.SetBool("running", true);
+			transform.eulerAngles = new Vector3(0f, 180f, 0f);
+		}
+
+		if (Input.GetAxis("Horizontal") == 0f)
+		{
+			anim.SetBool("running", false);
+		}
 
 		if (Input.GetButtonDown("Jump"))
 		{
