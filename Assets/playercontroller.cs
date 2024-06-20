@@ -10,6 +10,7 @@ public class playercontroller : MonoBehaviour
 	private bool doubleJump;
 	private int jumps;
 	private Rigidbody2D rig;
+	private bool hand;
 	Animator anim;
 
 	// Start is called before the first frame update
@@ -22,12 +23,17 @@ public class playercontroller : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (y > rig.velocity.y) {
+		/*
+		if (rig.velocity.y < 0f) {
             anim.SetBool("falling", true);
-        }
+        } else if (rig.velocity.y == 0f)
+		{
+			anim.SetBool("falling", false);
+		} */
 		x = transform.position.x;
 		y = rig.velocity.y;
 		movement();
+		punch();
 	}
 
 	void movement()
@@ -37,7 +43,7 @@ public class playercontroller : MonoBehaviour
 
 		float axis = Input.GetAxis("Horizontal");
 		bool isRunning = axis != 0f;
-        anim.SetBool("running", isRunning);
+		anim.SetBool("running", isRunning);
 		if (isRunning) {
 			transform.eulerAngles = axis > 0f ? Vector3.zero : new Vector3(0f, 180f, 0f);
 		}
@@ -50,15 +56,48 @@ public class playercontroller : MonoBehaviour
 				doubleJump = true;
 			}
 		}
-    }
+	}
+
+	void punch()
+	{
+		if (Input.GetButtonDown("Fire1"))
+		{
+			if (!hand) {
+				anim.Play("leftpunch");
+			} else {
+				anim.Play("rightpunch");
+			}
+			hand = !hand;
+		}
+	}
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.gameObject.CompareTag("Ground")) {
+			Debug.Log("enter collision");
 			doubleJump = false;
 			jumps = 0;
 			anim.SetBool("jumping", false);
-            anim.SetBool("falling", false);
-        }
+			anim.SetBool("falling", false);
+			rig.isKinematic = false;
+		}
+	}
+
+	void OnCollisionStay2D(Collision2D collision)
+	{
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			Debug.Log("stay collision");
+			rig.isKinematic = false;
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D collision)
+	{
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			Debug.Log("exit collision");
+			rig.isKinematic = false;
+		}
 	}
 }
