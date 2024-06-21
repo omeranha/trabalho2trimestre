@@ -20,26 +20,18 @@ public class Player : MonoBehaviour
 	{
 		rig = GetComponent<Rigidbody2D>();
 		anim = GetComponent<Animator>();
-		health = 3;
-		attackCollider.enabled = false;
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		attackCollider.enabled = false;
+		health = 3;
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		if (health == 0) {
-			//Destroy(gameObject);
+			Destroy(gameObject);
 		}
 
-		/*
-		float velocity = rig.velocity.y;
-		if (velocity < 0f && !anim.GetBool("jumping")) {
-			anim.SetBool("falling", true);
-		} else if (velocity >= 0f) {
-			anim.SetBool("falling", false);
-		}
-		*/
 		Movement();
 		Punch();
 	}
@@ -58,15 +50,15 @@ public class Player : MonoBehaviour
 
 		if (Input.GetButtonDown("Jump") && jumps < 2) {
 			rig.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-			anim.SetBool("jumping", true); // todo: use anim.Play to avoid working on animator and cleaner code
+			anim.SetBool("jumping", true);
+			anim.SetBool("falling", true);
 			jumps++;
 		}
 	}
 
 	void Punch()
 	{
-		if (Input.GetKeyDown(KeyCode.B))
-		{
+		if (Input.GetKeyDown(KeyCode.B)) {
 			anim.Play(hand ? "rightpunch" : "leftpunch");
 			hand = !hand;
 			StartCoroutine(ActivateAttack());
@@ -79,7 +71,6 @@ public class Player : MonoBehaviour
 			jumps = 0;
 			anim.SetBool("jumping", false);
 			anim.SetBool("falling", false);
-			//rig.isKinematic = false; todo: tests
 		}
 
 		if (collision.gameObject.CompareTag("zombie")) {
