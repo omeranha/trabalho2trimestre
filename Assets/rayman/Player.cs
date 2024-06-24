@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -112,6 +113,9 @@ public class Player : MonoBehaviour
 		anim.enabled = false;
 		spriteRenderer.sprite = sprite;
 		gameFinished = true;
+		if (sprite.name == "lose") {
+			SceneManager.LoadScene("gameover", LoadSceneMode.Single);
+		}
 	}
 
 	IEnumerator ActivateAttack()
