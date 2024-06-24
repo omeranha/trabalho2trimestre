@@ -6,6 +6,8 @@ TagManager:
   tags:
   - zombie
   - ground
+  - lum
+  - obstacle
   layers:
   - Default
   - TransparentFX
