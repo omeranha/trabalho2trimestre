@@ -17,9 +17,6 @@ public class Zombie : MonoBehaviour
 		rig = GetComponent<Rigidbody2D>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		health = 3;
-		for (int i = 1; i < 10; i++) {
-			Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), GameObject.Find("lum" + i).GetComponent<Collider2D>());
-		}
 	}
 
 	// Update is called once per frame

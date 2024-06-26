@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 	public TMPro.TextMeshProUGUI textTMP;
 	public Sprite winGame;
 	public Sprite loseGame;
+	public Fader fader;
 	private int jumps;
 	private bool hand;
 	private Rigidbody2D rig;
@@ -91,11 +92,6 @@ public class Player : MonoBehaviour
 			anim.SetBool("jumping", false);
 			anim.SetBool("falling", false);
 		}
-
-		if (collision.gameObject.CompareTag("lum")) {
-			textTMP.text = (int.Parse(textTMP.text) + 1).ToString();
-			Destroy(collision.gameObject);
-		}
 	}
 
 	private void OnCollisionStay2D(Collision2D collision) {
@@ -114,7 +110,7 @@ public class Player : MonoBehaviour
 		spriteRenderer.sprite = sprite;
 		gameFinished = true;
 		if (sprite.name == "lose") {
-			SceneManager.LoadScene("gameover", LoadSceneMode.Single);
+			fader.FadeScene("gameover");
 		}
 	}
 
