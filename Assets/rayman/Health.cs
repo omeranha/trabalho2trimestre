@@ -10,14 +10,14 @@ public class Health : MonoBehaviour
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 		int health = player.health;
 		spriteRenderer.sprite = hearts[health];
-    }
+	}
 }

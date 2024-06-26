@@ -42,6 +42,25 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.CompareTag("ground") || collision.gameObject.CompareTag("obstacle")) {
+			jumps = 0;
+			anim.SetBool("jumping", false);
+			anim.SetBool("falling", false);
+		}
+	}
+
+	void OnCollisionStay2D(Collision2D collision) {
+		if (collision.gameObject.CompareTag("zombie") && Time.time - lastHit >= 2f) {
+			if (health > 0) {
+				health--;
+				StartCoroutine(GotHit());
+				lastHit = Time.time;
+			}
+		}
+	}
+
 	void Movement()
 	{
 		Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
@@ -82,25 +101,6 @@ public class Player : MonoBehaviour
 
 		if (health == 0) {
 			StopPlayer(loseGame);
-		}
-	}
-
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.gameObject.CompareTag("ground") || collision.gameObject.CompareTag("obstacle")) {
-			jumps = 0;
-			anim.SetBool("jumping", false);
-			anim.SetBool("falling", false);
-		}
-	}
-
-	private void OnCollisionStay2D(Collision2D collision) {
-		if (collision.gameObject.CompareTag("zombie") && Time.time - lastHit >= 2f) {
-			if (health > 0) {
-				health--;
-				StartCoroutine(GotHit());
-				lastHit = Time.time;
-			}
 		}
 	}
 
